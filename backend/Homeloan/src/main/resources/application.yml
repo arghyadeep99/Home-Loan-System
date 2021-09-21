@@ -3,15 +3,14 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/homeloandb
     username: root
-    password: root
+    password: PassRoot@1326
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     show-sql: true
-    database-platform: org.hibernate.dialect.MySQL5Dialect
-  application:
-    name: homeloan Service
-server:
-  port: 9000
+    application:
+      name: Homeloan-Service
+server: 
+  port: 9001
   servlet:
     context-path: /api/homeloan
