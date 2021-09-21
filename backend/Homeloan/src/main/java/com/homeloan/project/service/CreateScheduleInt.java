@@ -1,7 +1,6 @@
 package com.homeloan.project.service;
 
 import java.util.List;
-import java.util.Date;
 
 import com.homeloan.project.model.LoanRepayment;
 
@@ -14,7 +13,11 @@ public interface CreateScheduleInt {
 	public double calculateBalanceOutstanding(double outstanding,double principal_paid);
 	public void viewRepayment();
 	public void exportRepaymentScheduleInCsv();
-	public double calculatePrepayment();
-	public double calculateForclosure();
+	public double calculatePrincipalPostPPM(double principal, double prepayment);
+	public double calculateEmiPostPrepayment(double principal, double prepayment,double yearly_roi,int tenure_months);
+	public double calculateForeclosure();
 	
 }
+/* when we are using pre payment and foreclosure, we need to update the database after calculating the revised*/
+/*emi , monthly interest, prinicpal and outstanding balance*/
+/*lumpsum */
