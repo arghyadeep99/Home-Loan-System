@@ -14,5 +14,4 @@ spring:
 server:
   port: 9000
   servlet:
-    context-path: /api/empl
-
+    context-path: /api/homeloan
