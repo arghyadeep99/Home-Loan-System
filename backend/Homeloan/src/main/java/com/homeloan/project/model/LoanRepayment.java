@@ -14,12 +14,15 @@ import lombok.NoArgsConstructor;
 @Table(name="loanrepaymentschedule")
 public class LoanRepayment {
 	@Id
+	private String loan_acc_id ;
+	@Id
 	private int year_month ;
 	private String trans_date;
-	private String trans_type;
+	//private String trans_type;
+	private enum trans_type{EMI,PPM};
 	private double emi;
 	private double principal;
 	private double interest_amount;
 	private double outstanding_amount;
-	private String status;
+	private enum status{PENDING,PAID,CANCELLED};
 }
