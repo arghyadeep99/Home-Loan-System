@@ -7,7 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class HomeloanApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(HomeloanApplication.class, args);
+		//SpringApplication.run(HomeloanApplication.class, args);
+		System.out.println("Helellooo");
 	}
 
 }
