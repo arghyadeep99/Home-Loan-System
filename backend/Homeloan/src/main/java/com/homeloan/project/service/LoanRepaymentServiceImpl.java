@@ -1,5 +1,6 @@
 package com.homeloan.project.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,28 +21,22 @@ public class LoanRepaymentServiceImpl implements LoanRepaymentService {
 	LoanScheduleRepository loanScheduleRepository;
 
 	@Override
-	public List<LoanRepayment> getScheduleByYearMonth(int yearmonth) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Map<String,List<Double>> createSchedule(String loanAccId, double principal, double yearly_roi, int tenure) {
 		int tenure_months = tenure*12;
 		LoanRepaymentCalculationsImpl loanRepaymentCalculationsImpl = new LoanRepaymentCalculationsImpl();
 		double emi = loanRepaymentCalculationsImpl.calculateEMI(principal, yearly_roi, tenure_months);
 		double currentOutstanding = principal;
 		double monthly_interest, monthly_principal;
-		ArrayList<Double> outstandings = new ArrayList<Double>(tenure_months);
+		ArrayList<Double> monthlyOutstandings = new ArrayList<Double>(tenure_months);
 		ArrayList<Double> monthlyInterests = new ArrayList<Double>(tenure_months);
 		ArrayList<Double> monthlyPrincipals = new ArrayList<Double>(tenure_months);
 		//out.add(currentOutstanding);
-		System.out.println(emi);
+		//System.out.println(emi);
 		for(int i = 0; i < tenure_months; i++) {
 			monthly_interest = loanRepaymentCalculationsImpl.calculateMonthlyInterest(currentOutstanding, yearly_roi);
 			monthly_principal = loanRepaymentCalculationsImpl.calculatePrincipal(emi, monthly_interest);
 			currentOutstanding = loanRepaymentCalculationsImpl.calculateBalanceOutstanding(currentOutstanding, monthly_principal);
-			outstandings.add(currentOutstanding);
+			monthlyOutstandings.add(currentOutstanding);
 			monthlyInterests.add(monthly_interest);
 			monthlyPrincipals.add(monthly_principal);
 		}
@@ -51,10 +46,10 @@ public class LoanRepaymentServiceImpl implements LoanRepaymentService {
 //			 System.out.println();
 //			 
 //		}
-		Map<String,List<Double>> returnMap = new HashMap();
+		Map<String,List<Double>> returnMap = new HashMap<String, List<Double>>();
 		returnMap.put("monthlyInterests",monthlyInterests);
 		returnMap.put("monthlyPrincipals", monthlyPrincipals);
-		returnMap.put("outstandings", outstandings);
+		returnMap.put("monthlyOutstandings", monthlyOutstandings);
 		return returnMap;
 	}
 
@@ -80,16 +75,68 @@ public class LoanRepaymentServiceImpl implements LoanRepaymentService {
 			return null;
 	}
 
-	public Optional<LoanRepayment> getByLoanAccIdAndYrMonth(String loanAccId,int yrMonth){
+	@Override
+	public Optional<LoanRepayment> getByLoanAccIdAndYrMonth(String loanAccId, int yrMonth){
 		return loanScheduleRepository.getByLoanAccIdAndYrMonth(loanAccId,yrMonth);
-		
 	}
 	
 	@Override
-	public String PayEmi(double EmiPaidByCust, int yearmonth,String loanAccId) {
-		LoanRepaymentServiceImpl LRSI=new LoanRepaymentServiceImpl();
+	public List<LoanRepayment> getByLoanAccIdAndStatus(String loanAccId, PaymentStatus status){
 		
-		getByLoanAccId(loanAccId);
+		return loanScheduleRepository.getByLoanAccIdAndStatus(loanAccId, status);
+	}
+
+	
+	@Override
+	public Optional<LoanRepayment> getByLoanAccIdAndYrMonthAndTransactionType(String loanAccId, int yrMonth,
+			TransactionType transType) {
+		
+		return loanScheduleRepository.getByLoanAccIdAndYrMonthAndTransactionType(loanAccId, yrMonth, transType);
+	}
+	
+	
+	@Override
+	public String PayEmi(String loanAccId, int yearMonth, double EmiPaidByCust) {
+		
+		//TODO: Implement updating SavingsAccount here. Can use EmiPaidByCust variable.
+		
+		Optional<LoanRepayment> lr1 = loanScheduleRepository.getByLoanAccIdAndYrMonth(loanAccId, yearMonth);
+		if (lr1 != null) {
+			LoanRepayment loanRepayment = lr1.get();
+			loanRepayment.setStatus(PaymentStatus.PAID);
+			loanScheduleRepository.save(loanRepayment);
+			return "Status updated";
+		}
+		return null;
+	}
+
+	@Override
+	public String Foreclosure(String loanAccId, int lastPaidYrMonth, LocalDate foreclosurePaymentDate, int tenure) {
+		
+		//TODO: Implement updating SavingsAccount here. Can use EmiPaidByCust variable.
+		int tenure_months = tenure * 12;
+		Optional<LoanRepayment> lr1 = loanScheduleRepository.getByLoanAccIdAndYrMonth(loanAccId, lastPaidYrMonth + 1);
+		if (lr1 != null) {
+			// TODO: Need to implement a delete on the original row, as .save() creates new entry. 
+			//Check if update method exists, then use that.
+			// If we don't delete, a NEW record is created, which messes the code up.
+			LoanRepayment loanRepayment = lr1.get();
+			loanRepayment.setStatus(PaymentStatus.PAID);
+			loanRepayment.setTransactionType(TransactionType.FC);
+			loanScheduleRepository.save(loanRepayment);
+			for(int i = lastPaidYrMonth+1; i <= tenure_months; i++) {
+				Optional<LoanRepayment> lr2 = loanScheduleRepository.getByLoanAccIdAndYrMonth(loanAccId, i);
+				LoanRepayment nextLoanRepayment = lr2.get();
+				nextLoanRepayment.setEmi(0);
+				nextLoanRepayment.setInterestAmount(0);
+				nextLoanRepayment.setOutstandingAmount(0);
+				nextLoanRepayment.setPrincipal(0);
+				nextLoanRepayment.setPaymentDate(foreclosurePaymentDate);
+				nextLoanRepayment.setStatus(PaymentStatus.CANCELLED);
+				loanScheduleRepository.save(nextLoanRepayment);
+			}
+			return "Success";
+		}
 		return null;
 	}
 

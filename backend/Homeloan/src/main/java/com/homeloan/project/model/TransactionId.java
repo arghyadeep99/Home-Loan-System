@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class TransactionId implements Serializable{
 
 	private String loanAccId;
-	private int yr_month;
-	private PaymentStatus status;
+	private int yrMonth;
+	private TransactionType transactionType;
 	
 }

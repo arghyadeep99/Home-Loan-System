@@ -37,8 +37,6 @@ public class LoanRepaymentCalculationsImpl implements LoanRepaymentCalculations 
 		return outstanding-principal_paid;
 	}
 
-
-
 	@Override
 	public double calculateEmiPostPrepayment(double principal, double prepayment,double yearly_roi,int tenure_months) {
 		/*new principal for revised EMI structure*/

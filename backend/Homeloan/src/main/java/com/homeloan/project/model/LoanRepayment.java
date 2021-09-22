@@ -1,4 +1,6 @@
 package com.homeloan.project.model;
+import java.time.LocalDate;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -21,14 +23,14 @@ public class LoanRepayment {
 	private String loanAccId ;
 	@Id
 	private int yrMonth;
-	private String trans_date;
-	@Enumerated(EnumType.STRING)
-	private TransactionType transType;
-	private double emi;
-	private double principal;
-	private double interest_amount;
-	private double outstanding_amount;
+	private LocalDate paymentDate;
 	@Enumerated(EnumType.STRING)
 	@Id
+	private TransactionType transactionType;
+	private double emi;
+	private double principal;
+	private double interestAmount;
+	private double outstandingAmount;
+	@Enumerated(EnumType.STRING)
 	private PaymentStatus status;
 }
