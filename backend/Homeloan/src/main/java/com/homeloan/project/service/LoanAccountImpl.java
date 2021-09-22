@@ -26,21 +26,25 @@ public class LoanAccountImpl implements LoanAccountService {
 	
 	@Override
 	public String addLoanAccount(LoanAccount loanAccount) {		
-		LoanAccount loanAccount2 = loanAccountRepository.save(loanAccount);
-		SavingsAccountImpl savingsAccountImpl = new SavingsAccountImpl();
-		if(loanAccount2 != null)
-		{
-			Optional<SavingsAccount> object = savingsAccountService.getSavingsAccountBySeqid(loanAccount.getSeqid());
-			SavingsAccount objectOfSavingAccount = object.get();
-			String emailOfUser = objectOfSavingAccount.getEmail();
-			String nameOfUser = objectOfSavingAccount.getName();
-			newuser.sendLoanApproval(emailOfUser,nameOfUser,loanAccount);
-			return "success";
-		}
-		else
-		{
-			return "fail";
-		}
+				
+				
+				SavingsAccountImpl savingsAccountImpl = new SavingsAccountImpl();
+			
+
+				Optional<SavingsAccount> object = savingsAccountService.getSavingsAccountBySeqid(loanAccount.getSeqid());
+				SavingsAccount objectOfSavingAccount = object.get();
+				
+				double salaryAmount = objectOfSavingAccount.getSalarayAmount();
+				
+				if(loanAccount.getTotal_loan_amount() <= salaryAmount * 50) {
+					LoanAccount loanAccount2 = loanAccountRepository.save(loanAccount);
+					String emailOfUser = objectOfSavingAccount.getEmail();
+					String nameOfUser = objectOfSavingAccount.getName();
+					newuser.sendLoanApproval(emailOfUser,nameOfUser,loanAccount);
+					return "success";
+				}else {
+					return "failed";
+				}
 
 	}
 

@@ -39,8 +39,12 @@ public class LoanAccountController {
 	
 	@PostMapping("/addLoanAccount")
 	public ResponseEntity<?> addLoanAccount(@RequestBody LoanAccount loanAccount) {
-		loanAccountService.addLoanAccount(loanAccount);
-		return ResponseEntity.status(201).body(loanAccount);
+		String res  = loanAccountService.addLoanAccount(loanAccount);
+		if(res == "success")
+		{
+			return ResponseEntity.status(201).body(loanAccount);
+		}
+		return ResponseEntity.status(200).body("Sorry your requested home loan amount is larger than 50 times of your monthly salary ");
 	}
 	
 	@GetMapping("/getLoanAccounts")
