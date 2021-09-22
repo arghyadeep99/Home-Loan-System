@@ -20,9 +20,8 @@ public class LoanRepayment {
 	@Id
 	private String loanAccId ;
 	@Id
-	private int yr_month;
+	private int yrMonth;
 	private String trans_date;
-	//private String trans_type;
 	@Enumerated(EnumType.STRING)
 	private TransactionType transType;
 	private double emi;

@@ -1,13 +1,17 @@
 package com.homeloan.project.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.homeloan.project.model.LoanRepayment;
+import com.homeloan.project.model.PaymentStatus;
+import com.homeloan.project.model.TransactionType;
 import com.homeloan.project.repository.LoanScheduleRepository;
 
 @Service
@@ -22,7 +26,7 @@ public class LoanRepaymentServiceImpl implements LoanRepaymentService {
 	}
 
 	@Override
-	public String createSchedule(String loanAccId, double principal, double yearly_roi, int tenure) {
+	public Map<String,List<Double>> createSchedule(String loanAccId, double principal, double yearly_roi, int tenure) {
 		int tenure_months = tenure*12;
 		LoanRepaymentCalculationsImpl loanRepaymentCalculationsImpl = new LoanRepaymentCalculationsImpl();
 		double emi = loanRepaymentCalculationsImpl.calculateEMI(principal, yearly_roi, tenure_months);
@@ -42,12 +46,16 @@ public class LoanRepaymentServiceImpl implements LoanRepaymentService {
 			monthlyPrincipals.add(monthly_principal);
 		}
 
-		for(int i = 0; i < tenure_months; i++) {
-			System.out.printf("Monthly Interest: %.2f, Monthly Principal: %.2f, Outstanding: %.2f", monthlyInterests.get(i), monthlyPrincipals.get(i), outstandings.get(i));;
-			 System.out.println();
-			 
-		}
-		return "0";
+//		for(int i = 0; i < tenure_months; i++) {
+//			System.out.printf("Monthly Interest: %.2f, Monthly Principal: %.2f, Outstanding: %.2f", monthlyInterests.get(i), monthlyPrincipals.get(i), outstandings.get(i));;
+//			 System.out.println();
+//			 
+//		}
+		Map<String,List<Double>> returnMap = new HashMap();
+		returnMap.put("monthlyInterests",monthlyInterests);
+		returnMap.put("monthlyPrincipals", monthlyPrincipals);
+		returnMap.put("outstandings", outstandings);
+		return returnMap;
 	}
 
 	@Override
@@ -58,7 +66,7 @@ public class LoanRepaymentServiceImpl implements LoanRepaymentService {
 
 	@Override
 	public List<LoanRepayment> getByLoanAccId(String loanAccId) {
-		// TODO Auto-generated method stub
+		
 		return loanScheduleRepository.getByLoanAccId(loanAccId);
 	}
 
@@ -70,6 +78,19 @@ public class LoanRepaymentServiceImpl implements LoanRepaymentService {
 			return "success";
 		else
 			return null;
+	}
+
+	public Optional<LoanRepayment> getByLoanAccIdAndYrMonth(String loanAccId,int yrMonth){
+		return loanScheduleRepository.getByLoanAccIdAndYrMonth(loanAccId,yrMonth);
+		
+	}
+	
+	@Override
+	public String PayEmi(double EmiPaidByCust, int yearmonth,String loanAccId) {
+		LoanRepaymentServiceImpl LRSI=new LoanRepaymentServiceImpl();
+		
+		getByLoanAccId(loanAccId);
+		return null;
 	}
 
 }
