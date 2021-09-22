@@ -3,14 +3,14 @@ package com.homeloan.project.main;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import com.homeloan.project.service.CreateScheduleImpl;
+import com.homeloan.project.service.LoanRepaymentCalculationsImpl;
 
 @SpringBootApplication
 public class HomeloanApplication {
 
 	public static void main(String[] args) {
 		ApplicationContext applicationContext = SpringApplication.run(HomeloanApplication.class, args);
-		CreateScheduleImpl objj=new CreateScheduleImpl();
+		LoanRepaymentCalculationsImpl objj=new LoanRepaymentCalculationsImpl();
 		double emi = objj.calculateEMI(5000000, 12, 120);
 		double intr = objj.calculateMonthlyInterest(5000000, 12);
 		double pri = objj.calculatePrincipal(emi, intr);

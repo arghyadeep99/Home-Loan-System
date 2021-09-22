@@ -7,19 +7,8 @@ import java.lang.Math;
 import com.homeloan.project.model.LoanRepayment;
 
 @Service
-public class CreateScheduleImpl implements CreateScheduleInt {
+public class LoanRepaymentCalculationsImpl implements LoanRepaymentCalculations {
 
-	@Override
-	public List<LoanRepayment> getScheduleByYearMonth(int yearmonth) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String addSchedule() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public double calculateEMI(double principal, double yearly_roi, int tenure_months) {
@@ -48,17 +37,7 @@ public class CreateScheduleImpl implements CreateScheduleInt {
 		return outstanding-principal_paid;
 	}
 
-	@Override
-	public void viewRepayment() {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void exportRepaymentScheduleInCsv() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public double calculateEmiPostPrepayment(double principal, double prepayment,double yearly_roi,int tenure_months) {

@@ -4,15 +4,12 @@ import java.util.List;
 
 import com.homeloan.project.model.LoanRepayment;
 
-public interface CreateScheduleInt {
-	public List<LoanRepayment> getScheduleByYearMonth(int yearmonth);
-	public String addSchedule();
+public interface LoanRepaymentCalculations {
+	
 	public double calculateEMI(double principal ,double yearly_roi, int tenure_months);
 	public double calculateMonthlyInterest(double outstanding , double yearly_roi);
 	public double calculatePrincipal(double emi,double interest);
 	public double calculateBalanceOutstanding(double outstanding,double principal_paid);
-	public void viewRepayment();
-	public void exportRepaymentScheduleInCsv();
 	public double calculatePrincipalPostPPM(double principal, double prepayment);
 	public double calculateEmiPostPrepayment(double principal, double prepayment,double yearly_roi,int tenure_months);
 	public double calculateForeclosure();
