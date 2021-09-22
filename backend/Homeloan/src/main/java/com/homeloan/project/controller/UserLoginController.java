@@ -1,9 +1,12 @@
 package com.homeloan.project.controller;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,14 +17,46 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.homeloan.project.model.UserLogin;
+import com.homeloan.project.repository.UserLoginRepository;
 import com.homeloan.project.service.UserLoginService;
  
-@RestController
+@Controller
 @EnableWebMvc
 public class UserLoginController{
 	@Autowired
-	UserLoginService userLoginService;
+	UserLoginRepository userLoginRepo;
+
+	@GetMapping("")
+	public String viewHomePage() {
+		return "index";
+	}
 	
+	@GetMapping("/register")
+	public String showRegistrationForm(Model model) {
+		model.addAttribute("user", new UserLogin());
+		
+		return "signup_form";
+	}
+	
+	@PostMapping("/process_register")
+	public String processRegister(UserLogin user) {
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String encodedPassword = passwordEncoder.encode(user.getPassword());
+		user.setPassword(encodedPassword);
+		
+		userLoginRepo.save(user);
+		
+		return "register_success";
+	}
+	
+	@GetMapping("/users")
+	public String listUsers(Model model) {
+		List<UserLogin> listUsers = userLoginRepo.findAll();
+		model.addAttribute("listUsers", listUsers);
+		
+		return "users";
+	}
+	/*
 	@RequestMapping("/userLogin")
 	public ModelAndView index () {
 	    ModelAndView modelAndView = new ModelAndView();
@@ -49,6 +84,6 @@ public class UserLoginController{
 		else
 			return ResponseEntity.status(404).body("record not found");
 		
-	}
+	}*/
 	
 }
