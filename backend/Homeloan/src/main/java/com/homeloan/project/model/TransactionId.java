@@ -2,14 +2,13 @@ package com.homeloan.project.model;
 
 import java.io.Serializable;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class TransactionId implements Serializable{
 
-	private String loanAccId ;
-	
+	private String loanAccId;
 	private int yr_month;
+	private PaymentStatus status;
 	
-	public TransactionId(String loanAccId, int yr_month) {
-		this.loanAccId = loanAccId;
-		this.yr_month = yr_month;
-	}
 }

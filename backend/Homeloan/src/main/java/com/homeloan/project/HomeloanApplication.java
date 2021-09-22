@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
 import com.homeloan.project.model.LoanRepayment;
+import com.homeloan.project.model.PaymentStatus;
 import com.homeloan.project.service.LoanRepaymentCalculationsImpl;
 import com.homeloan.project.service.LoanRepaymentService;
 
@@ -24,7 +25,10 @@ public class HomeloanApplication {
 //		double new_emi = objj.calculateEmiPostPrepayment(5000000, 215205, 12, 120);
 //		System.out.println(new_emi);
 //		System.out.println("Hellooo");
-//		
+		LoanRepayment LR = new LoanRepayment();
+		LR.setStatus(PaymentStatus.PAID);//	
+		PaymentStatus getstatus = LR.getStatus();
+		System.out.println(getstatus);
 //		LoanRepayment loanRepayment = new LoanRepayment();
 		//Optional<LoanRepayment> result = loanRepaymentService.getLoanRepaymentByLoanAccId();
 		//System.out.println(result.get());
