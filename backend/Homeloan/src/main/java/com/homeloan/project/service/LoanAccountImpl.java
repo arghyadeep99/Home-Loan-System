@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.homeloan.project.controller.MailRegistrationController;
 import com.homeloan.project.model.LoanAccount;
 import com.homeloan.project.repository.LoanAccountRepository;
 
@@ -15,13 +16,22 @@ public class LoanAccountImpl implements LoanAccountService {
 	@Autowired
 	LoanAccountRepository loanAccountRepository;
 	
+
+	@Autowired
+	MailRegistrationController newuser;
+	
 	@Override
 	public String addLoanAccount(LoanAccount loanAccount) {		
 		LoanAccount loanAccount2 = loanAccountRepository.save(loanAccount);
 		if(loanAccount2 != null)
+		{
+			newuser.send();
 			return "success";
+		}
 		else
+		{
 			return "fail";
+		}
 
 	}
 

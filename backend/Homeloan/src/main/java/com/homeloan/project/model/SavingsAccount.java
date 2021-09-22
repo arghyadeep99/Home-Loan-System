@@ -15,8 +15,10 @@ import lombok.NoArgsConstructor;
 @Table(name="savingsaccount")
 public class SavingsAccount {
 	@Id
-	private String account_no;
+	private String seqId;
+	private String accountNumber;
 	private String name;
 	private String email;
-	private double current_balance;
+	private double currentBalance; 
+	private double salarayAmount;
 }

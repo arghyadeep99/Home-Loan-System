@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/homeloandb
+    url: 'jdbc:mysql://localhost:3306/homeloandb'
     username: root
     password: 12345
   jpa:
@@ -10,8 +10,19 @@ spring:
     show-sql: true
   application:
     name: homeloanService
+  mail:
+    host: smtp.gmail.com
+    username: homeloan124578@gmail.com
+    password: homeloan123
+    properties:
+      mail:
+        smtp:
+          auth: true
+          socketFactory:
+            port: 465
+            class: javax.net.ssl.SSLSocketFactory
+            fallback: false
 server:
   port: 9001
   servlet:
     context-path: /api/homeloan
-
