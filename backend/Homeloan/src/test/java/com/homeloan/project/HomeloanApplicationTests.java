@@ -1,4 +1,4 @@
-package com.homeloan.project.main;
+package com.homeloan.project;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

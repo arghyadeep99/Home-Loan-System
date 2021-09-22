@@ -1,30 +1,34 @@
 package com.homeloan.project.controller;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import com.homeloan.project.model.LoanAccount;
+import com.homeloan.project.model.SavingsAccount;
 import com.homeloan.project.model.UserLogin;
 import com.homeloan.project.repository.UserLoginRepository;
-//import com.homeloan.project.service.UserLoginService;
+import com.homeloan.project.service.SavingsAccountService;
  
 @Controller
 @EnableWebMvc
 public class UserLoginController{
 	@Autowired
 	UserLoginRepository userLoginRepo;
+	
+	@Autowired
+	SavingsAccountService savingsAccountService;
 
 	@GetMapping("")
 	public String viewHomePage() {
@@ -49,41 +53,59 @@ public class UserLoginController{
 		return "register_success";
 	}
 	
+//	@GetMapping("/users")
+//	public String listUsers(Model model) {
+//		List<UserLogin> listUsers = userLoginRepo.findAll();
+//		model.addAttribute("listUsers", listUsers);
+//		return "users";
+//	}
+	
 	@GetMapping("/users")
-	public String listUsers(Model model) {
-		List<UserLogin> listUsers = userLoginRepo.findAll();
-		model.addAttribute("listUsers", listUsers);
-		
+	public String accountDetails(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		UserLogin user = userLoginRepo.findByUserId(auth.getName());
+		SavingsAccount account = savingsAccountService.getSavingsAccountBySeqid(user.getSeq_id()).get();
+		model.addAttribute("account", account);
 		return "users";
 	}
-	/*
-	@RequestMapping("/userLogin")
-	public ModelAndView index () {
-	    ModelAndView modelAndView = new ModelAndView();
-	    modelAndView.setViewName("login");
-	    return modelAndView;
+	
+	@GetMapping("/loanApplication")
+	public String loanApplication(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		UserLogin user = userLoginRepo.findByUserId(auth.getName());
+		SavingsAccount account = savingsAccountService.getSavingsAccountBySeqid(user.getSeq_id()).get();
+		model.addAttribute("account", account);
+		Map<String, String> loanObject = new HashMap<>();
+		loanObject.put("seqId", user.getSeq_id());
+		loanObject.put("amount", "");
+		loanObject.put("tenure", "");
+		model.addAttribute("seqId", user.getSeq_id());
+		model.addAttribute("amount", "");
+		model.addAttribute("tenure", "");
+		model.addAttribute("loanObject",loanObject);
+		LoanAccount loan_acc = new LoanAccount();
+		loan_acc.setSeqid(user.getSeq_id());
+		model.addAttribute("loanAccObject", loan_acc);
+//		System.out.println("************************"+model..toString());
+		return "loan_application";
 	}
-//	@ResponseBody
 	
+	@PostMapping("/loan_process")
+	public String loanProcess(LoanAccount loanAccObject)
+	{
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		UserLogin user = userLoginRepo.findByUserId(auth.getName());
+		loanAccObject.setSeqid(user.getSeq_id());
+		System.out.println("*************************************"+loanAccObject.toString());
+		return "loan_applied";
+	}
 	
-	
-	@PostMapping("/userLogin/{id}/{password}")
-	public ResponseEntity<?> getUserById(@PathVariable("id") String userid,@PathVariable("password") String password) {
-		
-		Optional<UserLogin> optional = userLoginService.getUserid(userid);
-		if(optional.isPresent()) {
-			if(optional.get().getUserid().equals(userid) && optional.get().getPassword().equals(password)) {
-				return  ResponseEntity.status(200).body("done for the day");
-			}
-			else {
-				return ResponseEntity.status(200).body("wrong credentials");
-			}
-			
-		}
-		
-		else
-			return ResponseEntity.status(404).body("record not found");
-		
-	}*/
-	
+//	@PostMapping("/loan_applied")
+//	public String loanApplied(LoanAccount loanAccObject)
+//	{
+//		System.out.println("*************************************"+loanAccObject.toString());
+//		return "users";
+//	}
+
+
 }

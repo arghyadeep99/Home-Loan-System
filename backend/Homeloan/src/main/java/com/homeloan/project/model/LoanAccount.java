@@ -22,7 +22,7 @@ public class LoanAccount {
 	private String loan_acc_id;  
 	private String seqid; 
 	private double total_loan_amount; 
-	private double roi; 
+	private double roi=7.00; 
 	private int tenure;
 	private String status = "Approved"; 
 }

@@ -12,8 +12,6 @@ import com.homeloan.project.model.UserLogin;
 
 public class UserLoginService implements UserDetails {
 	
-	//public Optional<UserLogin> getUserid(String userid);
-	//public String getPassword(String userid);
 	@Autowired
 	private UserLogin user;
 	

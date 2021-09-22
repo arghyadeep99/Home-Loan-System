@@ -55,7 +55,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 			.formLogin()
 				.usernameParameter("userid")
-				.defaultSuccessUrl("/getSavingsAccounts")
+				.defaultSuccessUrl("/users")
 				.permitAll()
 			.and().csrf().disable()
 			.logout().logoutSuccessUrl("/").permitAll();

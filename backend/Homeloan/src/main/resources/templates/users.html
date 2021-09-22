@@ -1,40 +1,74 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-	<meta charset="ISO-8859-1">
-	<title>List Users</title>
-	<link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
-	<script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
-	<script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
-</head>
-<body>
-<div class="container text-center">
-	<div>
-		<form th:action="@{/logout}" method="post">
-			<p>
-				Welcome user
-			</p>
-			<input type="submit" value="Sign Out" />
-		</form>
+  <head>
+    <meta charset="ISO-8859-1">
+    <title>Account Details</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
+    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+    <style>
+      table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+      }
+      td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+      }
+      tr:nth-child(even) {
+      background-color: #dddddd;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container text-center">
+      <h1>
+        Welcome <b>[[${#request.userPrincipal.principal.username}]]</b>
+      </h1>
+      <div>
+        <h3>Account Details</h3>
+      </div>
+      <div>
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th>Account Name</th>
+              <th>Account Number</th>
+              <th>Email</th>
+              <th>Current Balance</th>
+              <th>Salary</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td th:text="${account.name}">User ID</td>
+              <td th:text="${account.accountNumber}">User ID</td>
+              <td th:text="${account.email}">User ID</td>
+              <td th:text="${account.currentBalance}">User ID</td>
+              <td th:text="${account.salarayAmount}">User ID</td>
+            </tr>
+          </tbody>
+        </table>
+        <div>
+          <br>
+          <form th:action="@{/logout}" method="post">
+            <b>
+            <input type="submit" value="Sign Out" />
+          </form>
+        </div>
+        <div>
+			<h3>Apply for Loan</h3>
+		</div>
+		<div class="container text-center">
+		<div>
+			<h1>User Registration - Sign Up</h1>
+		</div>
+		<a th:href="@{/loanApplication}">Loan Application</a>
+		
 	</div>
-	<div>
-		<h1>List of Users</h1>
-	</div>
-	
-	<div>
-		<table class="table table-striped table-bordered">
-			<thead class="thead-dark">
-				<tr>
-					<th>User ID</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="user: ${listUsers}">
-					<td th:text="${user.userid}">User ID</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-</div>
-</body>
+      </div>
+    </div>
+  </body>
 </html>
