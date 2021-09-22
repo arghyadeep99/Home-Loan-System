@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class LoanAccount {
 	@Id
 	private String loan_acc_id;
-	private String seq_id;
+	private String seqid;
 	private double total_loan_amount;
 	private double roi;
 	private int tenure;

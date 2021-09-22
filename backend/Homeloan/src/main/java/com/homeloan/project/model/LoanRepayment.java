@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Table(name="loanrepaymentschedule")
 public class LoanRepayment {
 	@Id
-	private int year_month ;
+	private int yr_month ;
 	private String trans_date;
 	private String trans_type;
 	private double emi;
