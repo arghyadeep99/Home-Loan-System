@@ -16,13 +16,13 @@ public class LoanRepaymentCalculationsImpl implements LoanRepaymentCalculations 
 		double monthly_roi=(yearly_roi/12)/100;
 		double monthly_roi_pn=Math.pow(monthly_roi+1, tenure_months);
 		double emi = (principal*monthly_roi*monthly_roi_pn)/(monthly_roi_pn-1);
-		return Math.round(emi);
+		return emi;
 	}
 
 	@Override
 	public double calculateMonthlyInterest(double outstanding, double yearly_roi) {
 		double monthly_interest = outstanding*((yearly_roi/12)/100);
-		return Math.round(monthly_interest);
+		return monthly_interest;
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class LoanRepaymentCalculationsImpl implements LoanRepaymentCalculations 
 
 	@Override
 	public double calculateEmiPostPrepayment(double principal, double prepayment,double yearly_roi,int tenure_months) {
-		/*new principal for revised emi structure*/
+		/*new principal for revised EMI structure*/
 		double new_principal = calculatePrincipalPostPPM(principal, prepayment);
 		double newEmi=calculateEMI(new_principal,yearly_roi,tenure_months);
 		return newEmi;

@@ -6,7 +6,7 @@ import com.homeloan.project.model.LoanRepayment;
 
 public interface LoanRepaymentCalculations {
 	
-	public double calculateEMI(double principal ,double yearly_roi, int tenure_months);
+	public double calculateEMI(double principal, double yearly_roi, int tenure_months);
 	public double calculateMonthlyInterest(double outstanding , double yearly_roi);
 	public double calculatePrincipal(double emi,double interest);
 	public double calculateBalanceOutstanding(double outstanding,double principal_paid);
