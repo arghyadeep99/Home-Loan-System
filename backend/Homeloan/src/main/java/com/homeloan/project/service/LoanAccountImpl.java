@@ -1,6 +1,7 @@
 package com.homeloan.project.service;
 
 import java.util.List;
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.homeloan.project.model.LoanAccount;
 import com.homeloan.project.repository.LoanAccountRepository;
+import com.homeloan.project.controller.MailRegistrationController;
 
 @Service
 public class LoanAccountImpl implements LoanAccountService {
@@ -15,11 +17,23 @@ public class LoanAccountImpl implements LoanAccountService {
 	@Autowired
 	LoanAccountRepository loanAccountRepository;
 	
+	@Autowired
+	MailRegistrationController newuser;
+	
 	@Override
 	public String addLoanAccount(LoanAccount loanAccount) {		
-		LoanAccount loanAccount2 = loanAccountRepository.save(loanAccount);
-		if(loanAccount2 != null)
+		LoanAccount loanAccount1 = loanAccountRepository.save(loanAccount);
+		if(loanAccount1 != null) {
+			
+			
+			
+			
+			//newuser.send();
+			
 			return "success";
+			
+		}
+			
 		else
 			return "fail";
 

@@ -22,7 +22,7 @@ public class HomeloanApplication {
 		
 		
 //		LoanAccount loanAccount = new LoanAccount("8765432109","1234567890",10000.00,7.0,20,"APPROVED");
-//		String result = loanAccountService.addLoanAccount(loanAccount);	
+//		String result = loanAccountService.addLoanAccount(loanAccount);
 	}
 
 }
