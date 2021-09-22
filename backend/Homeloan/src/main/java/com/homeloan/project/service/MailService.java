@@ -11,6 +11,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import com.homeloan.project.model.LoanAccount;
+
 
 @Service
 public class MailService {
@@ -42,7 +44,7 @@ public class MailService {
 	 * @throws MailException
 	 */
 
-	public void sendEmail(String email) throws MailException {
+	public void sendEmail(String email,String name,LoanAccount loanAccount ) throws MailException {
 
 		/*
 		 * This JavaMailSender Interface is used to send Mail in Spring Boot. This
@@ -58,8 +60,12 @@ public class MailService {
 		
 		
 		mail.setTo(email);
-		mail.setSubject("testing mail - Status of your loan application");
-		mail.setText("Congratulations"+ demoname + "your loan for" + demoamount + "has been approved");
+		mail.setSubject("Loan Approved");
+		mail.setText("Congratulations "+ name + " your loan Account ID is : (" + loanAccount.getLoan_acc_id() + ") has been approved for "
+				+ " \n amount of  : " + loanAccount.getTotal_loan_amount() + " ₹" + 
+				" \n Rate of Interest : " + loanAccount.getRoi() + 
+				" \n Tenure Of : " + loanAccount.getTenure()
+				);
 
 		/*
 		 * This send() contains an Object of SimpleMailMessage as an Parameter

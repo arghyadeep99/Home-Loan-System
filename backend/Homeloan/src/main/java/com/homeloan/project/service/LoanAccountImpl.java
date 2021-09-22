@@ -3,11 +3,13 @@ package com.homeloan.project.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.homeloan.project.controller.MailRegistrationController;
 import com.homeloan.project.model.LoanAccount;
+import com.homeloan.project.model.SavingsAccount;
 import com.homeloan.project.repository.LoanAccountRepository;
 
 @Service
@@ -19,13 +21,20 @@ public class LoanAccountImpl implements LoanAccountService {
 
 	@Autowired
 	MailRegistrationController newuser;
+	@Autowired
+	SavingsAccountService savingsAccountService;
 	
 	@Override
 	public String addLoanAccount(LoanAccount loanAccount) {		
 		LoanAccount loanAccount2 = loanAccountRepository.save(loanAccount);
+		SavingsAccountImpl savingsAccountImpl = new SavingsAccountImpl();
 		if(loanAccount2 != null)
 		{
-			newuser.send();
+			Optional<SavingsAccount> object = savingsAccountService.getSavingsAccountBySeqid(loanAccount.getSeqid());
+			SavingsAccount objectOfSavingAccount = object.get();
+			String emailOfUser = objectOfSavingAccount.getEmail();
+			String nameOfUser = objectOfSavingAccount.getName();
+			newuser.sendLoanApproval(emailOfUser,nameOfUser,loanAccount);
 			return "success";
 		}
 		else

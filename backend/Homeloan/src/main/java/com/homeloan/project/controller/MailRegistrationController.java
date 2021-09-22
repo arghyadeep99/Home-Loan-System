@@ -8,6 +8,8 @@ import org.springframework.mail.MailException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.homeloan.project.model.LoanAccount;
+import com.homeloan.project.model.SavingsAccount;
 import com.homeloan.project.service.MailService;
 
 @RestController
@@ -15,16 +17,13 @@ public class MailRegistrationController {
 
 	@Autowired
 	private MailService notificationService;
- 
+
 
 	@RequestMapping("send-mail")
-	public String send() {
-		
-		
-
+	public String sendLoanApproval(String email,String name,LoanAccount loanAccount) {
 		
 		try {
-			notificationService.sendEmail("becata6177@u461.com"); 
+			notificationService.sendEmail(email,name,loanAccount); 
 		} catch (MailException mailException) {
 			System.out.println(mailException);
 		}

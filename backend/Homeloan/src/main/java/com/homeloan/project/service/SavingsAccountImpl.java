@@ -35,6 +35,10 @@ public class SavingsAccountImpl implements SavingsAccountService {
 		SavingsAccount obj = tempObject.get();
 		System.out.println("before update : ");
 		System.out.println( obj.getAccountNumber() + " " + obj.getCurrentBalance() );
+		if(obj.getCurrentBalance() < emi)
+		{
+			return null;
+		}
 		obj.setCurrentBalance( obj.getCurrentBalance() - emi);
 		System.out.println("after update : ");
 		System.out.println( obj.getAccountNumber() + " " + obj.getCurrentBalance() );
