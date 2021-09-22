@@ -1,6 +1,7 @@
 package com.homeloan.project.model;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -11,12 +12,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@IdClass(TransactionId.class)
 @Table(name="loanrepaymentschedule")
 public class LoanRepayment {
 	@Id
-	private String loan_acc_id ;
+	private String loanAccId ;
 	@Id
-	private int year_month ;
+	private int yr_month;
 	private String trans_date;
 	//private String trans_type;
 	private enum trans_type{EMI,PPM};

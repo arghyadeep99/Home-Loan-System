@@ -12,7 +12,6 @@ public interface LoanRepaymentCalculations {
 	public double calculateBalanceOutstanding(double outstanding,double principal_paid);
 	public double calculatePrincipalPostPPM(double principal, double prepayment);
 	public double calculateEmiPostPrepayment(double principal, double prepayment,double yearly_roi,int tenure_months);
-	public double calculateForeclosure();
 	
 }
 /* when we are using pre payment and foreclosure, we need to update the database after calculating the revised*/

@@ -48,12 +48,6 @@ public class LoanRepaymentCalculationsImpl implements LoanRepaymentCalculations 
 	}
 
 	@Override
-	public double calculateForeclosure() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public double calculatePrincipalPostPPM(double principal, double prepayment) {
 		double new_principal = principal-prepayment;
 		return new_principal;

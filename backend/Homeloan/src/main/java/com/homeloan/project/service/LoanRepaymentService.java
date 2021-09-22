@@ -10,5 +10,6 @@ public interface LoanRepaymentService {
 	public String addSchedule();
 	public void viewRepayment();
 	public void exportRepaymentScheduleInCsv();
+	public List<LoanRepayment> findByLoanAccId(String loanAccId);
 	
 }
