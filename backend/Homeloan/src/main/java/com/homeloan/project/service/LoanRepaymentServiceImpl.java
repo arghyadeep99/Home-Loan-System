@@ -30,6 +30,8 @@ public class LoanRepaymentServiceImpl implements LoanRepaymentService {
 		ArrayList<Double> monthlyOutstandings = new ArrayList<Double>(tenure_months);
 		ArrayList<Double> monthlyInterests = new ArrayList<Double>(tenure_months);
 		ArrayList<Double> monthlyPrincipals = new ArrayList<Double>(tenure_months);
+		ArrayList<Double> monthlyEmi = new ArrayList<Double>(1);
+		monthlyEmi.add(emi);
 		//out.add(currentOutstanding);
 		//System.out.println(emi);
 		for(int i = 0; i < tenure_months; i++) {
@@ -50,6 +52,7 @@ public class LoanRepaymentServiceImpl implements LoanRepaymentService {
 		returnMap.put("monthlyInterests",monthlyInterests);
 		returnMap.put("monthlyPrincipals", monthlyPrincipals);
 		returnMap.put("monthlyOutstandings", monthlyOutstandings);
+		returnMap.put("monthlyEmi", monthlyEmi);
 		return returnMap;
 	}
 

@@ -35,10 +35,10 @@ public class HomeloanApplication {
 		int userYrMonth = 4;
 		Date date = Date.valueOf("2021-09-22");
 		LocalDate paymentDate = date.toLocalDate();
-		
+	
 		double emi = loanRepaymentCalculations.calculateEMI(principal, yearly_roi, tenure*12);
 		emi = Double.parseDouble(new DecimalFormat("#.##").format(emi));
-		
+//		
 //		Map<String,List<Double>> res = new HashMap<String, List<Double>>();
 //		res = loanRepaymentService.createSchedule(userLoanAccId, principal, yearly_roi, tenure);
 //		int scheduleLength = res.get("monthlyInterests").size();
@@ -51,8 +51,8 @@ public class HomeloanApplication {
 //			paymentDate = paymentDate.plusMonths(1);
 //			loanRepaymentService.addToSchedule(LRP);
 //		}
-		
-		//PayEMI
+//		
+//		//PayEMI
 //		for(int j = 1; j <= userYrMonth; j++) {
 //		Optional<LoanRepayment> LR = loanRepaymentService.getByLoanAccIdAndYrMonth(userLoanAccId, j);
 //		System.out.println((LR.get()).getEmi());
@@ -96,6 +96,51 @@ public class HomeloanApplication {
 //		}
 //		else
 //			System.out.println("Check if you've paid atleast 3 months of EMI. Please pay the exact amount mentioned for Foreclosure.");
+		
+		
+		//Prepayment
+//		List<LoanRepayment> LR4 = loanRepaymentService.getByLoanAccIdAndStatus(userLoanAccId, PaymentStatus.PAID);
+//		System.out.println(LR4);
+//		int lastPaidYrMonth = LR4.get(LR4.size()-1).getYrMonth();
+//		System.out.println(lastPaidYrMonth);
+//		// +1 in argument below to get outstanding for next month from where it's pending.
+//		Optional<LoanRepayment> LR5 = loanRepaymentService.getByLoanAccIdAndYrMonthAndTransactionType(userLoanAccId, lastPaidYrMonth + 1, TransactionType.EMI);
+//		double currentOutstanding = (LR5.get()).getOutstandingAmount();
+//		LocalDate foreclosurePaymentDate = (LR5.get()).getPaymentDate();
+//		double currentMonthEmi = (LR5.get()).getEmi();
+//		
+//		double userPrepayment = 4*currentMonthEmi; //hard-coded value from YrMonth4, please take this from user by Controller
+//		if(userPrepayment >= 3*currentMonthEmi && (currentOutstanding - userPrepayment > 0)) {
+//			double newPrincipal = currentOutstanding - userPrepayment;
+//			
+//			Map<String,List<Double>> res = new HashMap<String, List<Double>>();
+//			res = loanRepaymentService.createSchedule(userLoanAccId, newPrincipal, yearly_roi, tenure);
+//			int scheduleLength = res.get("monthlyInterests").size();
+//			double newEmi = (res.get("monthlyEmi")).get(0);
+//			newEmi = Double.parseDouble(new DecimalFormat("#.##").format(newEmi));
+////			System.out.println(scheduleLength);
+//			for(int i = 0; i<scheduleLength; i++) {
+//				double monthlyInterest = Double.parseDouble(new DecimalFormat("#.##").format(res.get("monthlyInterests").get(i)));
+//				double monthlyPrincipal = Double.parseDouble(new DecimalFormat("#.##").format(res.get("monthlyPrincipals").get(i)));
+//				double monthlyOutstanding =Double.parseDouble(new DecimalFormat("#.##").format(res.get("monthlyOutstandings").get(i)));
+//				if (i+1 == lastPaidYrMonth) {
+//					LoanRepayment LRP = new LoanRepayment(userLoanAccId, i+1 , paymentDate, TransactionType.PPM, 0, userPrepayment, 0, newPrincipal, PaymentStatus.PAID);
+//					//paymentDate = paymentDate.plusMonths(1);
+//					loanRepaymentService.addToSchedule(LRP);
+//					continue;
+//				}
+//				else if (i+1 > lastPaidYrMonth) {
+//					LoanRepayment LRP = new LoanRepayment(userLoanAccId, i+1 , paymentDate, TransactionType.EMI, newEmi, monthlyPrincipal, monthlyInterest, monthlyOutstanding, PaymentStatus.PENDING);
+//					paymentDate = paymentDate.plusMonths(1);
+//					loanRepaymentService.addToSchedule(LRP);
+//				}
+//				else
+//					paymentDate = paymentDate.plusMonths(1);
+//				}
+//			System.out.println("Prepayment has been made, new schedule generated.");
+//			}
+//		else
+//			System.out.println("Error in making prepayment, please try again.");
 		}
 	}
 
