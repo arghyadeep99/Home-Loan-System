@@ -59,7 +59,7 @@ public class SavingsAccountController {
 	@PostMapping("/updateCurrentAmount")
 	public ResponseEntity<?> updateSavingsAccount(@RequestBody SavingsAccount savingsAccount) {
 		SavingsAccount updatedObject = savingsAccountService.updateSavingsAccount(savingsAccount.getSeqId(),savingsAccount.getCurrentBalance());
-		return ResponseEntity.status(201).body(updatedObject);
+		return ResponseEntity.status(200).body(updatedObject);
 	}
 	
 	

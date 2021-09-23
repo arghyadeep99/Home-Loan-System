@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.homeloan.project.model.LoanAccount;
+import com.homeloan.project.model.SavingsAccount;
 import com.homeloan.project.service.LoanAccountService;
 
 @RestController
@@ -75,6 +76,12 @@ public class LoanAccountController {
 		}
 		
 		return ResponseEntity.status(200).body(loanAccounts);
+	}
+	
+	@PostMapping("/updateLoanStatus")
+	public ResponseEntity<?> updateLoanStatus(@RequestBody LoanAccount loanAccount) {
+		LoanAccount updatedObjectLoan = loanAccountService.updateLoanStatus(loanAccount.getLoan_acc_id(), loanAccount.getStatus());
+		return ResponseEntity.status(200).body(updatedObjectLoan);
 	}
 	
 	

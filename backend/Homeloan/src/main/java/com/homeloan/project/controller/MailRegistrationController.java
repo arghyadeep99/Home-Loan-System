@@ -1,5 +1,8 @@
 package com.homeloan.project.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.mail.MessagingException;
 
 
@@ -20,10 +23,11 @@ public class MailRegistrationController {
 
 
 	@RequestMapping("send-mail")
-	public String sendLoanApproval(String email,String name,LoanAccount loanAccount) {
+	public String sendLoanApproval(String email,String name,LoanAccount loanAccount
+			,Map<String,List<Double>> schedule) {
 		
 		try {
-			notificationService.sendEmail(email,name,loanAccount); 
+			notificationService.sendEmail(email,name,loanAccount,schedule); 
 		} catch (MailException mailException) {
 			System.out.println(mailException);
 		}

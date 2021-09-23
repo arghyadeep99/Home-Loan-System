@@ -3,10 +3,10 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/homeloandb
     username: root
-    password: admin
+    password: 12345
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: true
   application:
     name: homeloanService

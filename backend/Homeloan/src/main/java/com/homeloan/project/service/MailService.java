@@ -1,5 +1,8 @@
 package com.homeloan.project.service;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
@@ -44,7 +47,8 @@ public class MailService {
 	 * @throws MailException
 	 */
 
-	public void sendEmail(String email,String name,LoanAccount loanAccount ) throws MailException {
+	public void sendEmail(String email,String name,LoanAccount loanAccount,
+			Map<String,List<Double>> schedule) throws MailException {
 
 		/*
 		 * This JavaMailSender Interface is used to send Mail in Spring Boot. This
@@ -57,6 +61,11 @@ public class MailService {
 		
 		SimpleMailMessage mail = new SimpleMailMessage();
 		
+		String schedule_p =  "";
+		
+		for(int i = 0; i < loanAccount.getTenure() * 12; i++) {
+		schedule_p = schedule_p.concat("Month " + (i+1) + " ) Monthly Interest: " + String.valueOf(schedule.get("monthlyInterests").get(i)) + " Monthly Principal: " + String.valueOf(schedule.get("monthlyPrincipals").get(i)) + " Outstanding: " + String.valueOf(schedule.get("monthlyOutstandings").get(i)) + "\n\n");
+	}
 		
 		
 		mail.setTo(email);
@@ -64,7 +73,8 @@ public class MailService {
 		mail.setText("Congratulations "+ name + " your loan Account ID is : (" + loanAccount.getLoan_acc_id() + ") has been approved for "
 				+ " \n amount of  : " + loanAccount.getTotal_loan_amount() + " ₹" + 
 				" \n Rate of Interest : " + loanAccount.getRoi() + 
-				" \n Tenure Of : " + loanAccount.getTenure()
+				" \n Tenure Of : " + loanAccount.getTenure() + " \n\n SCHEDULE FOR EMI's \n"
+				+schedule_p
 				);
 
 		/*
