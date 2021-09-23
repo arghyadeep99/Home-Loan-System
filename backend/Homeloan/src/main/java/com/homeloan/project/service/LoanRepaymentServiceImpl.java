@@ -94,6 +94,13 @@ public class LoanRepaymentServiceImpl implements LoanRepaymentService {
 		return loanScheduleRepository.getByLoanAccIdAndYrMonthAndTransactionType(loanAccId, yrMonth, transType);
 	}
 	
+	@Override
+	public void deleteByLoanAccIdAndYrMonthAndTransactionType(String loanAccId, int yrMonth,
+			TransactionType transType) {
+		
+		loanScheduleRepository.deleteByLoanAccIdAndYrMonthAndTransactionType(loanAccId, yrMonth, transType);
+	}
+	
 	
 	@Override
 	public String PayEmi(String loanAccId, int yearMonth, double EmiPaidByCust) {
@@ -117,14 +124,16 @@ public class LoanRepaymentServiceImpl implements LoanRepaymentService {
 		int tenure_months = tenure * 12;
 		Optional<LoanRepayment> lr1 = loanScheduleRepository.getByLoanAccIdAndYrMonth(loanAccId, lastPaidYrMonth + 1);
 		if (lr1 != null) {
-			// TODO: Need to implement a delete on the original row, as .save() creates new entry. 
-			//Check if update method exists, then use that.
-			// If we don't delete, a NEW record is created, which messes the code up.
 			LoanRepayment loanRepayment = lr1.get();
+			
 			loanRepayment.setStatus(PaymentStatus.PAID);
 			loanRepayment.setTransactionType(TransactionType.FC);
+			
 			loanScheduleRepository.save(loanRepayment);
-			for(int i = lastPaidYrMonth+1; i <= tenure_months; i++) {
+			
+			loanScheduleRepository.deleteByLoanAccIdAndYrMonthAndTransactionType(loanAccId, lastPaidYrMonth + 1, TransactionType.EMI);
+			
+			for(int i = lastPaidYrMonth+2; i <= tenure_months; i++) {
 				Optional<LoanRepayment> lr2 = loanScheduleRepository.getByLoanAccIdAndYrMonth(loanAccId, i);
 				LoanRepayment nextLoanRepayment = lr2.get();
 				nextLoanRepayment.setEmi(0);
@@ -137,6 +146,12 @@ public class LoanRepaymentServiceImpl implements LoanRepaymentService {
 			}
 			return "Success";
 		}
+		return null;
+	}
+
+	@Override
+	public String Prepayment(String loanAccId, int yearMonth, double EmiPaidByCust) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

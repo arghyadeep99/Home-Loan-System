@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.homeloan.project.model.LoanRepayment;
 import com.homeloan.project.model.PaymentStatus;
@@ -52,7 +53,8 @@ public class HomeloanApplication {
 //		}
 		
 		//PayEMI
-//		Optional<LoanRepayment> LR = loanRepaymentService.getByLoanAccIdAndYrMonth(userLoanAccId,userYrMonth);
+//		for(int j = 1; j <= userYrMonth; j++) {
+//		Optional<LoanRepayment> LR = loanRepaymentService.getByLoanAccIdAndYrMonth(userLoanAccId, j);
 //		System.out.println((LR.get()).getEmi());
 //		
 //		List<LoanRepayment> LR1 = loanRepaymentService.getByLoanAccIdAndStatus(userLoanAccId, PaymentStatus.PENDING);
@@ -61,7 +63,7 @@ public class HomeloanApplication {
 //		double emiPaidByCustomer = 71735.47; //hard-coded, please take this from user by Controller
 //		
 //		if (emiPaidByCustomer == emiToBePaid) {
-//			String result = loanRepaymentService.PayEmi(userLoanAccId, userYrMonth, emiPaidByCustomer);
+//			String result = loanRepaymentService.PayEmi(userLoanAccId, j, emiPaidByCustomer);
 //			if (result!= null)
 //				//implement updation of SavingsAccount ka money, by deducting EMI when this section of code is invoked
 //				System.out.println(result +". Your EMI has been paid and the same has been reflected in your payment schedule and savings account.");
@@ -70,7 +72,7 @@ public class HomeloanApplication {
 //		}
 //		else
 //			System.out.println("Please pay the exact amount mentioned for EMI.");
-		
+//		}
 		
 		//Foreclosure
 //		List<LoanRepayment> LR2 = loanRepaymentService.getByLoanAccIdAndStatus(userLoanAccId, PaymentStatus.PAID);
@@ -84,7 +86,7 @@ public class HomeloanApplication {
 //		System.out.println("Outstanding payment for YrMonth" + (lastPaidYrMonth+1) + " is: " + outstandingForForeclosure);
 //		
 //		double userPaymentForForeclosure = 4889127.24; //hard-coded value from YrMonth4, please take this from user by Controller
-//		if(lastPaidYrMonth >= 3 && (userPaymentForForeclosure == outstandingForForeclosure)) {
+//		if(lastPaidYrMonth > 3 && (userPaymentForForeclosure == outstandingForForeclosure)) {
 //			String result = loanRepaymentService.Foreclosure(userLoanAccId, lastPaidYrMonth, foreclosurePaymentDate, tenure);
 //			if (result!= null) {
 //				System.out.println(result + ". Foreclosure has been made. Loan Account status changed  to closed and payment schedule updated.");

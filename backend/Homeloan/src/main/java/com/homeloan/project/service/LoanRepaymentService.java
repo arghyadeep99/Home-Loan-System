@@ -18,8 +18,10 @@ public interface LoanRepaymentService {
 	public List<LoanRepayment> getByLoanAccIdAndStatus(String loanAccId, PaymentStatus status);
 	public Optional<LoanRepayment> getByLoanAccIdAndYrMonthAndTransactionType(String loanAccId, int yrMonth,
 			TransactionType transType);
+	public void deleteByLoanAccIdAndYrMonthAndTransactionType(String loanAccId, int yrMonth,
+			TransactionType transType);
 	public String PayEmi(String loanAccId,  int yearMonth, double EmiPaidByCust);
-	//PrePayment
+	public String Prepayment(String loanAccId, int yearMonth, double EmiPaidByCust);
 	public String Foreclosure(String loanAccId, int yearMonth, LocalDate foreclosurePaymentDate, int tenure);
 
 	
