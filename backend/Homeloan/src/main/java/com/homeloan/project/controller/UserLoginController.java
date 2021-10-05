@@ -19,18 +19,22 @@ import com.homeloan.project.model.LoanAccount;
 import com.homeloan.project.model.SavingsAccount;
 import com.homeloan.project.model.UserLogin;
 import com.homeloan.project.repository.UserLoginRepository;
+import com.homeloan.project.service.LoanAccountService;
 import com.homeloan.project.service.SavingsAccountService;
  
 @Controller
 @EnableWebMvc
 public class UserLoginController{
 	@Autowired
+	LoanAccountService loanAccountService;
+	
+	@Autowired
 	UserLoginRepository userLoginRepo;
 	
 	@Autowired
 	SavingsAccountService savingsAccountService;
 
-	@GetMapping("")
+	@GetMapping("/")
 	public String viewHomePage() {
 		return "index";
 	}
@@ -53,12 +57,6 @@ public class UserLoginController{
 		return "register_success";
 	}
 	
-//	@GetMapping("/users")
-//	public String listUsers(Model model) {
-//		List<UserLogin> listUsers = userLoginRepo.findAll();
-//		model.addAttribute("listUsers", listUsers);
-//		return "users";
-//	}
 	
 	@GetMapping("/users")
 	public String accountDetails(Model model) {
@@ -86,19 +84,62 @@ public class UserLoginController{
 		LoanAccount loan_acc = new LoanAccount();
 		loan_acc.setSeqid(user.getSeq_id());
 		model.addAttribute("loanAccObject", loan_acc);
-//		System.out.println("************************"+model..toString());
 		return "loan_application";
 	}
 	
-	@PostMapping("/loan_process")
-	public String loanProcess(LoanAccount loanAccObject)
-	{
+	@GetMapping("/EMIDashboard")
+	public String emiDashboard(Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		UserLogin user = userLoginRepo.findByUserId(auth.getName());
-		loanAccObject.setSeqid(user.getSeq_id());
-		System.out.println("*************************************"+loanAccObject.toString());
+		SavingsAccount account = savingsAccountService.getSavingsAccountBySeqid(user.getSeq_id()).get();
+		model.addAttribute("account", account);
+		Map<String, String> loanObject = new HashMap<>();
+		loanObject.put("seqId", user.getSeq_id());
+		loanObject.put("amount", "");
+		loanObject.put("tenure", "");
+		model.addAttribute("seqId", user.getSeq_id());
+		model.addAttribute("amount", "");
+		model.addAttribute("tenure", "");
+		model.addAttribute("loanObject",loanObject);
+		LoanAccount loan_acc = new LoanAccount();
+		loan_acc.setSeqid(user.getSeq_id());
+		model.addAttribute("loanAccObject", loan_acc);
+		return "loan_application";
+	}
+	
+	@PostMapping("/addLoanAccount2")
+	public String addLoanAccount(LoanAccount loanAccount, Model model) {
+		loanAccount.setLoan_acc_id(Integer.toString((int)(Math.random() * 1000000)));
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		UserLogin user = userLoginRepo.findByUserId(auth.getName());
+		loanAccount.setSeqid(user.getSeq_id());
+		String res  = loanAccountService.addLoanAccount(loanAccount);
+		if(res == "success")
+		{
+			return "loan_successful";
+		}
+		String msg = ("Sorry your requested home loan amount is larger than 50 times of your monthly salary " + res + 
+				"this is the maximum amount of loan you can get!");
+		model.addAttribute("message",msg);
 		return "loan_applied";
 	}
+	
+	
+//	
+//	@GetMapping("/loan_successful")
+//	public String loanSuccessful(Model model) {
+//		return "loan_successful";
+//	}
+//	
+//	@PostMapping("/loan_process")
+//	public String loanProcess(LoanAccount loanAccount)
+//	{
+//		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//		UserLogin user = userLoginRepo.findByUserId(auth.getName());
+//		loanAccount.setSeqid(user.getSeq_id());
+//		System.out.println("*************************************"+loanAccount.toString());
+//		return "loan_applied";
+//	}
 	
 //	@PostMapping("/loan_applied")
 //	public String loanApplied(LoanAccount loanAccObject)
